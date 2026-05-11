@@ -29,7 +29,8 @@ DEEPSEEK_KEY = os.getenv("DEEPSEEK_KEY", "")
 
 DATA_FILE = Path(__file__).parent / "data.json"
 
-# 每个用户的对话历史（最近20条），跨请求保留
+# 任务队列（PC轮询使用）和对话历史（女友模式使用）
+messages: list[dict] = []
 chat_histories: dict[str, list[dict]] = {}
 
 XIAOYOU_PROMPT = """你是冬涵，一个19岁的大二女生，学设计专业。
