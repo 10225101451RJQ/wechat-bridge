@@ -9,9 +9,9 @@ Usage:
 """
 
 import argparse
+import json
 import os
 import subprocess
-import sys
 import time
 from datetime import datetime
 
@@ -71,10 +71,14 @@ def main():
                 print(f"[{ts()}] Reply: {preview}...")
 
                 try:
+                    payload = json.dumps({"reply": reply}, ensure_ascii=False)
                     r = requests.post(
                         f"{server}/api/messages/{msg_id}/reply",
-                        json={"reply": reply},
-                        headers={"X-Bridge-Secret": BRIDGE_SECRET},
+                        data=payload.encode("utf-8"),
+                        headers={
+                            "X-Bridge-Secret": BRIDGE_SECRET,
+                            "Content-Type": "application/json; charset=utf-8",
+                        },
                         timeout=15,
                     )
                     if r.status_code == 200:
