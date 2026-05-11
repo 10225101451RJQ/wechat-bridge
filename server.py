@@ -27,6 +27,8 @@ WECHAT_AES_KEY = os.getenv("WECHAT_AES_KEY", "")
 BRIDGE_SECRET = os.getenv("BRIDGE_SECRET", "bridge_secret_change_me")
 DEEPSEEK_KEY = os.getenv("DEEPSEEK_KEY", "")
 
+DATA_FILE = Path(__file__).parent / "data.json"
+
 # 每个用户的对话历史（最近20条），跨请求保留
 chat_histories: dict[str, list[dict]] = {}
 
