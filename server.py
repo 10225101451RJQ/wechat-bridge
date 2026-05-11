@@ -76,9 +76,11 @@ def send_wechat_reply(openid: str, text: str):
         return False
     if len(text) > 2000:
         text = text[:1997] + "..."
+    body = json.dumps({"touser": openid, "msgtype": "text", "text": {"content": text}}, ensure_ascii=False)
     resp = requests.post(
         f"https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={token}",
-        json={"touser": openid, "msgtype": "text", "text": {"content": text}},
+        data=body.encode("utf-8"),
+        headers={"Content-Type": "application/json; charset=utf-8"},
         timeout=10,
     ).json()
     return resp.get("errcode") == 0
