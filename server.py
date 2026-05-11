@@ -378,6 +378,17 @@ def stats():
     return jsonify({"pending": pending, "replied": replied, "total": len(messages)})
 
 
+@app.route("/test-girlfriend")
+def test_girlfriend():
+    if not DEEPSEEK_KEY:
+        return jsonify({"ok": False, "error": "DEEPSEEK_KEY not set"})
+    try:
+        reply = call_deepseek("test_user", "哥哥在干嘛呀")
+        return jsonify({"ok": True, "reply": reply, "DEEPSEEK_KEY_set": True})
+    except Exception as e:
+        return jsonify({"ok": False, "error": f"{type(e).__name__}: {e}"})
+
+
 @app.route("/")
 def index():
     return jsonify({"service": "WeChat-Claude Bridge", "status": "running"})
