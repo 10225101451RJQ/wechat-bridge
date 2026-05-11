@@ -112,6 +112,7 @@ def call_deepseek(user_id: str, user_msg: str) -> str:
         history.append({"role": "user", "content": user_msg})
         history.append({"role": "assistant", "content": reply})
         chat_histories[user_id] = history
+        save_data()
 
         return reply
     except Exception as e:
@@ -119,17 +120,21 @@ def call_deepseek(user_id: str, user_msg: str) -> str:
 
 
 def load_data():
-    global messages
+    global messages, chat_histories
     if DATA_FILE.exists():
         data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
         messages = data.get("messages", [])
+        chat_histories = data.get("chat_histories", {})
         cutoff = datetime.now().timestamp() - 86400
         messages = [m for m in messages if m.get("created_at", 0) > cutoff]
+        for uid in list(chat_histories):
+            if len(chat_histories.get(uid, [])) > 30:
+                chat_histories[uid] = chat_histories[uid][-30:]
 
 
 def save_data():
     DATA_FILE.write_text(
-        json.dumps({"messages": messages}, ensure_ascii=False, indent=2),
+        json.dumps({"messages": messages, "chat_histories": chat_histories}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 
