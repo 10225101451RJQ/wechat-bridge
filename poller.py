@@ -20,7 +20,8 @@ from datetime import datetime
 import requests
 
 # 默认定时上线服务器
-DEFAULT_SERVER = "https://task-reminder-fj2e.onrender.com"
+# 默认定时上线服务器
+DEFAULT_SERVER = "https://wechat-bridge.onrender.com"
 
 BRIDGE_SECRET = os.getenv("BRIDGE_SECRET", "bridge_secret_change_me")
 CLAUDE_CMD = os.getenv("CLAUDE_CMD", "claude")
